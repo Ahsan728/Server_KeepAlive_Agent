@@ -1,0 +1,12 @@
+{
+  "name": "server-keepalive-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GitHub Action bot that renews a free PythonAnywhere web app before it expires.",
+  "scripts": {
+    "renew": "node scripts/renew-pythonanywhere.js"
+  },
+  "dependencies": {
+    "playwright": "1.58.2"
+  }
+}

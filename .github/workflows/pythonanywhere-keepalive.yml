@@ -1,0 +1,44 @@
+name: PythonAnywhere Keep Alive
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  renew-pythonanywhere:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Renew PythonAnywhere app
+        run: npm run renew
+        env:
+          PYTHONANYWHERE_LOGIN: ${{ secrets.PYTHONANYWHERE_LOGIN }}
+          PYTHONANYWHERE_PASSWORD: ${{ secrets.PYTHONANYWHERE_PASSWORD }}
+          PYTHONANYWHERE_WEBAPP_LABEL: ${{ vars.PYTHONANYWHERE_WEBAPP_LABEL }}
+
+      - name: Upload run screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pythonanywhere-keepalive-artifacts
+          path: artifacts/
+          if-no-files-found: ignore
