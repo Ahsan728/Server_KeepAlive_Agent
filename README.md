@@ -1,4 +1,4 @@
-# PythonAnywhere Keep Alive
+# PythonAnywhere Keep Alive V2
 
 This repository runs a weekly GitHub Action that logs into PythonAnywhere, opens the `Web` page, and clicks `Run until 1 month from today` for a free web app.
 
